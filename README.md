@@ -141,7 +141,7 @@ assume the top-level view is where the problem lives.
 No procedure is provided. Add `get_customer_engagement_summary` to
 your own copy of `schema/stored_procedures.sql`.
 
-**Requirement:** Write a stored procedure that returns two result sets:
+**Requirement:** Write a stored procedure that returns either one of the below 2 result sets based on the **parameter**:
 
 1. **Rep-level summary** — one row per sales rep, showing:
    - Rep name
@@ -191,36 +191,46 @@ No tables involved — pure date logic. No function is provided. Add
 
 ---
 
-## 5. Submitting your work
 
-1. Put your work in an **`answers/`** folder at the repo root,
-   mirroring the same filenames as `schema/` — this keeps your
-   corrected/new objects clearly separated from the original
-   (unmodified) scripts, so we can review yours easily:
-   ```
-   answers/views.sql               -- your corrected views (Exercise 2)
-   answers/stored_procedures.sql   -- your corrected + new procedures (Exercises 1 & 3)
-   answers/functions.sql           -- your new function (Exercise 4)
-   answers/NOTES.md                -- your written explanation for each exercise
-   ```
-2. In `answers/NOTES.md`, for every exercise write:
-   - What was wrong (for Exercises 1 & 2) or how you approached the
-     requirement (for Exercises 3 & 4).
-   - The queries you ran to test your assumptions along the way.
-   - Why your fix/solution is correct.
-3. Commit and push your branch:
-   ```bash
-   git add answers/
-   git commit -m "Add answers for candidate/<your-name>"
-   git push origin candidate/<your-name>
-   ```
-4. Let us know your branch name once you've pushed (or open a pull
-   request into `master` if you're comfortable doing so — either
-   works, just don't merge it yourself).
+## 7. Submitting Your Answers
 
-Please don't modify anything under `schema/` or `sql/` directly —
-leave the original scripts untouched so we can always re-run the
-baseline environment. All of your work belongs under `answers/`.
+All answer scripts go in a zipped folder named <yourfullname>.zip organized like this and to be sent via email:
+combining both the assignments
+```
+<yourfullname-email>
+└──grad-interview-uc1-investment-banking/
+   └── answers/
+        ├── part_a/
+        │   ├── q01_portfolio_value_usd.sql
+        │   ├── q02_advisor_changes_2025.sql
+        │   ├── q03_sector_change_while_held.sql
+        │   ├── q04_kyc_expired_transactions.sql
+        │   ├── q05_delisted_holdings.sql
+        │   ├── q06_fifo_realized_pnl.sql
+        │   ├── q07_top_10_gainers_90d.sql
+        │   ├── q08_stale_prices.sql
+        │   ├── q09_negative_holdings.sql
+        │   ├── q10_circular_transfers.sql
+        │   ├── q11_advisor_aum_trend.sql
+        │   ├── q12_pre_spike_purchases.sql
+        │   ├── q13_weighted_avg_purchase_price.sql
+        │   ├── q14_advisor_growth_ranking.sql
+        │   └── q15_advisor_switch_decline.sql
+        ├── part_b/
+        │   ├── b1_advisor_commissions_aug2025.sql
+        │   ├── b2_portfolio_value_31aug2025.sql
+        │   ├── b3_valuation_methodology_notes.md   (short written explanation, item 3 in Section 6)
+        │   └── b4_usd_reporting_check.sql
+        └── Notes-investment-banking.md                                (your assumptions log, one line per question)
+└──grad-interview-uc2-ecommerce/  
+   └── answers/
+        ├── part_a/
+        │   ├── ex01_get_revenue_by_region_foramonth.sql
+        │   ├── ex02_vw_region_revenue_report.sql
+        │   ├── ex03_sector_change_while_held.sql
+        │   └── ex04_fns_weekendoffercalendar.sql
+        └──Notes-ecommerce.md
+```
 
 That's it — good luck, and don't hesitate to ask if anything about
 the setup itself is unclear.
