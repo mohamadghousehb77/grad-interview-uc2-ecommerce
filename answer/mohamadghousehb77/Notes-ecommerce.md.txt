@@ -1,0 +1,62 @@
+# E-Commerce SQL Assessment Notes & Root Cause Analysis
+
+## Exercise 1: Revenue by Region (`ex01_get_revenue_by_region_foramonth.sql`)
+* **Root Cause Analysis:** 
+  1. Input parameter `@yearmonth` failed string comparisons when padded with whitespace (e.g., `' 202406 '`).
+  2. Order date formatting did not convert text to date cleanly to extract `YYYYMM`.
+  3. Product promotions were not filtered specifically for active campaigns (`is_active = 1`).
+  4. Blacklisted customers were included in the total revenue calculation.
+* **Fix Summary:** Trimmed `@yearmonth` using `TRIM()`, parsed order dates with `TRY_CAST()`, enforced active promotion filters, and excluded blacklisted customers using `NOT IN`.
+* **Verification Queries:**
+  ```sql
+  EXEC dbo.get_revenue_by_region_foramonth ' 202406 ';
+  EXEC dbo.get_revenue_by_region_foramonth '202412';
+  EXEC dbo.get_revenue_by_region_foramonth '202401';
+
+
+##Exercise 2: Region Revenue Report - Nested Views (ex02_vw_region_revenue_report.sql)
+Root Cause Analysis:
+
+The underlying view vw_active_orders contained a hardcoded WHERE order_status = 'ACTIVE' clause.
+
+This excluded CANCELLED, REFUNDED, and PENDING orders, violating the requirement to aggregate total revenue across all order statuses.
+
+Fix Summary: Removed the WHERE clause filter in vw_active_orders so all status types flow up to vw_region_revenue_report.
+
+Verification Queries:
+
+SQL
+SELECT * FROM dbo.vw_active_orders;
+SELECT * FROM dbo.vw_region_revenue_report;
+
+
+##Exercise 3: Customer Engagement Summary (ex03_sector_change_while_held.sql)
+Requirements & Implementation Notes:
+
+Built dbo.get_customer_engagement_summary to provide dual result sets (sales rep summary vs. customer roster) based on @sales_rep_id.
+
+Displayed unassigned customers under 'Unassigned' using ISNULL() and explicit outer joins.
+
+Mapped order status codes (COMPLETED, CANCELLED, REFUNDED, PENDING) to individual status counts.
+
+Verification Queries:
+
+SQL
+EXEC dbo.get_customer_engagement_summary @sales_rep_id = NULL;
+EXEC dbo.get_customer_engagement_summary @sales_rep_id = 1;
+
+
+##Exercise 4: Weekend Offer Calendar (ex04_fns_weekendoffercalendar.sql)
+Requirements & Implementation Notes:
+
+Built dbo.fn_generate_calendar using a recursive CTE to produce day-by-day sequence rows between @start_date and @end_date.
+
+Implemented DATEPART(dw, ...) logic to accurately flag Saturdays and Sundays regardless of server-level date configuration.
+
+Joined with dim.Promotion in dbo.get_weekend_offer_calendar to display weekend offer statuses.
+
+Verification Queries:
+
+SQL
+SELECT * FROM dbo.fn_generate_calendar('2025-08-01', '2025-08-31');
+EXEC dbo.get_weekend_offer_calendar @start_date = '2025-08-01', @end_date
